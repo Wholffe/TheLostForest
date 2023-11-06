@@ -41,15 +41,20 @@ func _physics_process(delta):
 			velocity.x = move_toward(velocity.x, 0, SPEED)
 		
 		check_attack()
-
 		move_and_slide()
 
 func check_attack():
 	if Input.is_action_just_pressed("ui_attack"):
 		is_attacking = true
-		print('attack')
+		$Area2D/CollisionShape2D.disabled = false
 		$AnimatedSprite2D.play("attack")
-
+		if($AnimatedSprite2D.flip_h):
+			$Area2D/CollisionShape2D.position.x *= -1
+			toggle_attack = true
 
 func _on_animated_sprite_2d_animation_finished():
 	is_attacking = false
+	$Area2D/CollisionShape2D.disabled = true
+	if toggle_attack:
+		$Area2D/CollisionShape2D.position.x *= -1
+		toggle_attack = false
