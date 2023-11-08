@@ -9,20 +9,23 @@ var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 var is_attacking = false
 var toggle_attack = false
 
+@onready var sprite: Sprite2D = $Sprite2D
+@onready var animation: AnimationPlayer = $AnimationPlayer
+
 func _physics_process(delta):
 	if(!is_attacking):
 		# Add the gravity.
 		if not is_on_floor():
 			velocity.y += gravity * delta
 			if(velocity.y > 0):
-				$AnimatedSprite2D.play("jump")
+				animation.play("fall")
 			else:
-				$AnimatedSprite2D.play("fall")
+				animation.play("jump")
 		else:
 			if(velocity.x == 0): 
-				$AnimatedSprite2D.play("idle")
+				animation.play("idle")
 			else:
-				$AnimatedSprite2D.play("run")
+				animation.play("run")
 
 		# Handle Jump.
 		if Input.is_action_just_pressed("jump") and is_on_floor():
@@ -34,25 +37,25 @@ func _physics_process(delta):
 		if direction:
 			velocity.x = direction * SPEED
 			if direction > 0:
-				$AnimatedSprite2D.flip_h = false
+				sprite.flip_h = false
 			else:
-				$AnimatedSprite2D.flip_h = true
+				sprite.flip_h = true
 		else:
 			velocity.x = move_toward(velocity.x, 0, SPEED)
 		
-		check_attack()
 		move_and_slide()
+		check_attack()
 
 func check_attack():
 	if Input.is_action_just_pressed("attack"):
 		is_attacking = true
 		$Area2D/CollisionShape2D.disabled = false
-		$AnimatedSprite2D.play("attack")
-		if($AnimatedSprite2D.flip_h):
+		animation.play("attack")
+		if(sprite.flip_h):
 			$Area2D/CollisionShape2D.position.x *= -1
 			toggle_attack = true
 
-func _on_animated_sprite_2d_animation_finished():
+func _on_animation_player_animation_finished(anim_name):
 	is_attacking = false
 	$Area2D/CollisionShape2D.disabled = true
 	if toggle_attack:
