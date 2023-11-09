@@ -24,11 +24,10 @@ func _physics_process(delta):
 	var direction = Input.get_axis("left", "right")
 	if direction:
 		velocity.x = direction * SPEED
-		if !is_attacking:
-			if direction > 0:
-				sprite.flip_h = false
-			else:
-				sprite.flip_h = true
+		if direction > 0:
+			sprite.flip_h = false
+		else:
+			sprite.flip_h = true
 	else:
 		velocity.x = move_toward(velocity.x, 0, SPEED)
 		
