@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://cy4is5phpcwf7"]
+[gd_scene load_steps=38 format=3 uid="uid://cy4is5phpcwf7"]
 
 [ext_resource type="Script" path="res://Scripts/Enemy.gd" id="1_035eo"]
 [ext_resource type="Texture2D" uid="uid://d0xv5e2rl3gq3" path="res://Assets/Skeleton enemy/Skeleton enemy.png" id="2_nw758"]
@@ -85,6 +85,54 @@ region = Rect2(128, 192, 64, 64)
 atlas = ExtResource("2_nw758")
 region = Rect2(192, 192, 64, 64)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_7838q"]
+atlas = ExtResource("2_nw758")
+region = Rect2(0, 128, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_n53jl"]
+atlas = ExtResource("2_nw758")
+region = Rect2(64, 128, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vyhjv"]
+atlas = ExtResource("2_nw758")
+region = Rect2(128, 128, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fkaru"]
+atlas = ExtResource("2_nw758")
+region = Rect2(192, 128, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b6dte"]
+atlas = ExtResource("2_nw758")
+region = Rect2(256, 128, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yu8mq"]
+atlas = ExtResource("2_nw758")
+region = Rect2(320, 128, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_78jip"]
+atlas = ExtResource("2_nw758")
+region = Rect2(384, 128, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ibilo"]
+atlas = ExtResource("2_nw758")
+region = Rect2(448, 128, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rc87u"]
+atlas = ExtResource("2_nw758")
+region = Rect2(512, 128, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_62gfn"]
+atlas = ExtResource("2_nw758")
+region = Rect2(576, 128, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_eun3d"]
+atlas = ExtResource("2_nw758")
+region = Rect2(640, 128, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rorhb"]
+atlas = ExtResource("2_nw758")
+region = Rect2(704, 128, 64, 64)
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_tnl3p"]
 animations = [{
 "frames": [{
@@ -161,6 +209,47 @@ animations = [{
 "loop": true,
 "name": &"idle",
 "speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7838q")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_n53jl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vyhjv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fkaru")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b6dte")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yu8mq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_78jip")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ibilo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rc87u")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_62gfn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_eun3d")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rorhb")
+}],
+"loop": false,
+"name": &"move",
+"speed": 10.0
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_a1m1d"]
@@ -174,7 +263,7 @@ shape = SubResource("CapsuleShape2D_fqqii")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_tnl3p")
-animation = &"idle"
+animation = &"death"
 autoplay = "idle"
 
 [node name="Area2D" type="Area2D" parent="."]

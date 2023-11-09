@@ -33,6 +33,7 @@ func _physics_process(delta):
 		
 	if(!is_attacking):
 		update_animation()
+		check_attack()
 	
 	if !jump_buffer.is_stopped() and (is_on_floor() or !coyote_timer.is_stopped() and can_jump):
 		jump()
@@ -42,7 +43,6 @@ func _physics_process(delta):
 		
 	var was_on_floor = is_on_floor()
 	
-	check_attack()
 	move_and_slide()
 	
 	if was_on_floor and !is_on_floor() and coyote_timer.is_stopped():
