@@ -8,44 +8,59 @@ const JUMP_VELOCITY = -400.0
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 var is_attacking = false
 var toggle_attack = false
+var can_jump = false
 
 @onready var sprite: Sprite2D = $Sprite2D
 @onready var animation: AnimationPlayer = $AnimationPlayer
+@onready var coyote_timer: Timer = $coyote_timer
 
 func _physics_process(delta):
-	if(!is_attacking):
-		# Add the gravity.
-		if not is_on_floor():
-			velocity.y += gravity * delta
-			if(velocity.y > 0):
-				animation.play("fall")
-			else:
-				animation.play("jump")
-		else:
-			if(velocity.x == 0): 
-				animation.play("idle")
-			else:
-				animation.play("run")
-
-		# Handle Jump.
-		if Input.is_action_just_pressed("jump") and is_on_floor():
-			velocity.y = JUMP_VELOCITY
-
-		# Get the input direction and handle the movement/deceleration.
-		# As good practice, you should replace UI actions with custom gameplay actions.
-		var direction = Input.get_axis("left", "right")
-		if direction:
-			velocity.x = direction * SPEED
+	if not is_on_floor():
+		velocity.y += gravity * delta
+	else:
+		can_jump = true
+		
+	var direction = Input.get_axis("left", "right")
+	if direction:
+		velocity.x = direction * SPEED
+		if !is_attacking:
 			if direction > 0:
 				sprite.flip_h = false
 			else:
 				sprite.flip_h = true
-		else:
-			velocity.x = move_toward(velocity.x, 0, SPEED)
+	else:
+		velocity.x = move_toward(velocity.x, 0, SPEED)
 		
-		move_and_slide()
-		check_attack()
+	if(!is_attacking):
+		update_animation()
 
+	if Input.is_action_just_pressed("jump") and (is_on_floor() or !coyote_timer.is_stopped() and can_jump):
+		jump()
+
+	var was_on_floor = is_on_floor()
+	
+	check_attack()
+	move_and_slide()
+	
+	if was_on_floor and !is_on_floor() and coyote_timer.is_stopped():
+		coyote_timer.start()
+
+func jump():
+	velocity.y = JUMP_VELOCITY
+	can_jump = false
+	
+func update_animation():
+	if not is_on_floor():
+		if(velocity.y > 0):
+			animation.play("fall")
+		else:
+			animation.play("jump")
+	else:
+		if(velocity.x == 0): 
+			animation.play("idle")
+		else:
+			animation.play("run")
+	
 func check_attack():
 	if Input.is_action_just_pressed("attack"):
 		is_attacking = true
