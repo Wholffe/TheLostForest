@@ -13,6 +13,7 @@ var can_jump = false
 @onready var sprite: Sprite2D = $Sprite2D
 @onready var animation: AnimationPlayer = $AnimationPlayer
 @onready var coyote_timer: Timer = $coyote_timer
+@onready var jump_buffer: Timer = $jump_buffer
 
 func _physics_process(delta):
 	if not is_on_floor():
@@ -33,10 +34,13 @@ func _physics_process(delta):
 		
 	if(!is_attacking):
 		update_animation()
-
-	if Input.is_action_just_pressed("jump") and (is_on_floor() or !coyote_timer.is_stopped() and can_jump):
+	
+	if !jump_buffer.is_stopped() and (is_on_floor() or !coyote_timer.is_stopped() and can_jump):
 		jump()
 
+	if Input.is_action_just_pressed("jump"):
+		jump_buffer.start()
+		
 	var was_on_floor = is_on_floor()
 	
 	check_attack()
