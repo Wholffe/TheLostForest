@@ -35,6 +35,7 @@ func kill_enemy():
 	animation.play("death")
 	$CollisionShape2D.disabled = true
 	await get_tree().create_timer(1.5).timeout
+	spawn_soul(self.position)
 	queue_free()
 	
 func hit():
@@ -45,6 +46,13 @@ func hit():
 	await get_tree().create_timer(0.2).timeout
 	is_hit = false
 
+func spawn_soul(targetlocation):
+	var soul = preload("res://Actors/soul.tscn")
+	var soul_instance = soul.instantiate()
+	soul_instance.position = targetlocation
+	get_parent().add_child(soul_instance)
+	
+	
 func _on_area_2d_area_entered(area):
 	if(area.is_in_group("FromPlayer")):
 		hit()
