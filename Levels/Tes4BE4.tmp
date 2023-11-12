@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://27s8lyunqtcv" path="res://Actors/Player.tscn" id="2_8bk0b"]
 [ext_resource type="PackedScene" uid="uid://cy4is5phpcwf7" path="res://Actors/Enemy.tscn" id="3_01v62"]
 [ext_resource type="PackedScene" uid="uid://8xhir7dfk87d" path="res://Actors/soul.tscn" id="4_nwgqm"]
-[ext_resource type="PackedScene" uid="uid://c6amlsrrfde4f" path="res://Levels/pause_menu.tscn" id="6_gc3vb"]
+[ext_resource type="PackedScene" uid="uid://c6amlsrrfde4f" path="res://Levels/pause_menu.tscn" id="5_y0mp6"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ns5wl"]
 texture = ExtResource("1_r40rf")
@@ -1232,32 +1232,34 @@ texture = ExtResource("1_r40rf")
 physics_layer_0/collision_layer = 1
 sources/0 = SubResource("TileSetAtlasSource_ns5wl")
 
-[node name="Testlevel" type="Node2D"]
+[node name="main" type="Node2D"]
 process_mode = 3
 script = ExtResource("1_erh0l")
 
-[node name="TileMap" type="TileMap" parent="."]
+[node name="Testlevel" type="Node2D" parent="."]
+process_mode = 1
+
+[node name="TileMap" type="TileMap" parent="Testlevel"]
 tile_set = SubResource("TileSet_6xfxc")
 format = 2
 layer_0/tile_data = PackedInt32Array(524289, 0, 0, 524290, 65536, 0, 524291, 131072, 0, 524292, 196608, 0, 524293, 262144, 0, 524294, 327680, 0, 524295, 0, 0, 524296, 65536, 0, 524297, 131072, 0, 524298, 196608, 0, 524299, 262144, 0, 524300, 327680, 0, 524301, 0, 0, 524302, 65536, 0, 524303, 131072, 0, 524304, 262144, 5, 524305, 262144, 0, 524306, 327680, 0, 524307, 0, 0, 524308, 65536, 0, 524309, 131072, 0, 524310, 196608, 0, 524311, 196608, 5, 524312, 327680, 0, 524313, 0, 0, 524314, 65536, 0, 524315, 131072, 0, 524316, 196608, 0, 524317, 262144, 0, 524318, 327680, 5, 458768, 0, 0, 458782, 0, 0, 458775, 0, 0, 16, 458752, 10, 65552, 458752, 11, 17, 524288, 10, 65553, 524288, 11, 18, 589824, 10, 65554, 589824, 11, 19, 655360, 10, 65555, 655360, 11, 20, 720896, 10, 65556, 720896, 11, 21, 589824, 10, 65557, 589824, 11, 22, 655360, 10, 65558, 655360, 11, 23, 720896, 10, 65559, 720896, 11, 24, 720896, 10, 65560, 720896, 11, -327669, 720896, 10, -262133, 720896, 11, -327668, 655360, 10, -262132, 655360, 11, -327667, 720896, 10, -262131, 720896, 11, -327666, 655360, 10, -262130, 655360, 11, -327665, 720896, 10, -262129, 720896, 11, -327674, 524288, 10, -262138, 524288, 11, -327673, 589824, 10, -262137, 589824, 11, -327672, 655360, 10, -262136, 655360, 11, -327671, 720896, 10, -262135, 720896, 11, -327670, 655360, 10, -262134, 655360, 11, -327675, 458752, 10, -262139, 458752, 11)
 
-[node name="Camera2D" type="Camera2D" parent="."]
-process_mode = 3
-position = Vector2(124, 103)
+[node name="Player" parent="Testlevel" instance=ExtResource("2_8bk0b")]
+position = Vector2(151, 88)
+
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="Testlevel/Player"]
+remote_path = NodePath("../../Camera2D")
+
+[node name="Camera2D" type="Camera2D" parent="Testlevel"]
+position = Vector2(151, 88)
 zoom = Vector2(3, 3)
 position_smoothing_enabled = true
 
-[node name="PauseMenu" parent="Camera2D" instance=ExtResource("6_gc3vb")]
-
-[node name="Enemy" parent="." instance=ExtResource("3_01v62")]
-process_mode = 1
+[node name="Enemy" parent="Testlevel" instance=ExtResource("3_01v62")]
 position = Vector2(302, 107)
 
-[node name="Soul" parent="." instance=ExtResource("4_nwgqm")]
+[node name="Soul" parent="Testlevel" instance=ExtResource("4_nwgqm")]
 position = Vector2(49, 108)
 
-[node name="Player" parent="." instance=ExtResource("2_8bk0b")]
-position = Vector2(124, 103)
-
-[node name="RemoteTransform2D" type="RemoteTransform2D" parent="Player"]
-remote_path = NodePath("../../Camera2D")
+[node name="PauseMenu" parent="." instance=ExtResource("5_y0mp6")]
+position = Vector2(151, 88)

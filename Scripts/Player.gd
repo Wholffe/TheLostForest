@@ -67,8 +67,9 @@ func update_animation():
 func check_attack():
 	if Input.is_action_just_pressed("attack"):
 		is_attacking = true
-		$Area2D/CollisionShape2D.disabled = false
 		animation.play("attack")
+		await get_tree().create_timer(0.2).timeout
+		$Area2D/CollisionShape2D.disabled = false
 		if(sprite.flip_h):
 			$Area2D/CollisionShape2D.position.x *= -1
 			toggle_attack = true
