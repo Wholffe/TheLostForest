@@ -24,6 +24,9 @@ func _physics_process(delta):
 		velocity.x = SPEED * direction
 		animation.play("move")
 		move_and_slide()
+	if(is_dead and !$VisibleOnScreenNotifier2D.is_on_screen()):
+		queue_free()
+			
 
 func check_status():
 	if(enemy_hp<=0):
@@ -33,10 +36,12 @@ func kill_enemy():
 	is_dead = true
 	animation.stop()
 	animation.play("death")
-	$CollisionShape2D.disabled = true
+	$CollisionShape2D.set_deferred("disabled",true)
+	$Area2D/CollisionShape2D.disabled = true
+	$GPUParticles2D.emitting = true
 	await get_tree().create_timer(1.5).timeout
+	$GPUParticles2D.emitting = false
 	spawn_soul(self.position)
-	queue_free()
 	
 func hit():
 	is_hit = true

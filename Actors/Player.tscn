@@ -1,6 +1,6 @@
 [gd_scene load_steps=12 format=3 uid="uid://27s8lyunqtcv"]
 
-[ext_resource type="Script" path="res://Scripts/Player.gd" id="1_ja7xp"]
+[ext_resource type="Script" path="res://Scripts/Player.gd" id="1_cgog5"]
 [ext_resource type="Texture2D" uid="uid://bk3k0kakrjwiu" path="res://Assets/oak_woods_v1.0/character/char_blue.png" id="1_s86tq"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_0nj6r"]
@@ -113,16 +113,17 @@ _data = {
 }
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2q5os"]
-size = Vector2(19, 13)
+size = Vector2(18, 9)
 
 [node name="Player" type="CharacterBody2D" groups=["Player"]]
-script = ExtResource("1_ja7xp")
+process_mode = 1
+script = ExtResource("1_cgog5")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_0nj6r")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(0, -13)
+position = Vector2(1, -13)
 texture = ExtResource("1_s86tq")
 hframes = 8
 vframes = 7
@@ -133,14 +134,10 @@ libraries = {
 "": SubResource("AnimationLibrary_57paf")
 }
 
-[node name="Camera2D" type="Camera2D" parent="."]
-zoom = Vector2(3, 3)
-position_smoothing_enabled = true
-
 [node name="Area2D" type="Area2D" parent="." groups=["FromPlayer"]]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-position = Vector2(18.5, -0.5)
+position = Vector2(18, -1.5)
 shape = SubResource("RectangleShape2D_2q5os")
 disabled = true
 
