@@ -1,7 +1,9 @@
 extends Node2D
 
+#soul = mana in globals
 @onready var animation: AnimatedSprite2D =  $AnimatedSprite2D
 var is_collected = false
+
 
 func _ready():
 	animation.play("start")
@@ -19,4 +21,5 @@ func collect():
 	is_collected = true
 	animation.play("end")
 	await get_tree().create_timer(0.5).timeout
+	Globals.add_mana()
 	queue_free()

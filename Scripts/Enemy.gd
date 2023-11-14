@@ -9,6 +9,9 @@ var is_dead = false
 var direction = 1
 var is_hit = false
 
+var knockback = false 
+var knockback_dir = 1
+
 @onready var animation: AnimatedSprite2D = $AnimatedSprite2D
 
 func _ready():
@@ -23,10 +26,14 @@ func _physics_process(delta):
 			animation.flip_h = !animation.flip_h
 		velocity.x = SPEED * direction
 		animation.play("move")
-		move_and_slide()
+	if knockback:
+		velocity.y = -50
+		velocity.x = 50 * knockback_dir
+		knockback = false
+	move_and_slide()
 	if(is_dead and !$VisibleOnScreenNotifier2D.is_on_screen()):
+		$CollisionShape2D.set_deferred("disabled",true)
 		queue_free()
-			
 
 func check_status():
 	if(enemy_hp<=0):
@@ -35,8 +42,8 @@ func check_status():
 func kill_enemy():
 	is_dead = true
 	animation.stop()
+	velocity.x = 0
 	animation.play("death")
-	$CollisionShape2D.set_deferred("disabled",true)
 	$Area2D/CollisionShape2D.disabled = true
 	$GPUParticles2D.emitting = true
 	await get_tree().create_timer(1.5).timeout
@@ -48,6 +55,9 @@ func hit():
 	enemy_hp -= 1
 	animation.play("hit")
 	check_status()
+	var player_dir = get_parent().get_node("Player").dir
+	knockback_dir = player_dir
+	knockback = true
 	await get_tree().create_timer(0.2).timeout
 	is_hit = false
 

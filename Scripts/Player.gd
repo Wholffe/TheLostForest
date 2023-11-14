@@ -9,12 +9,13 @@ var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 var is_attacking = false
 var toggle_attack = false
 var can_jump = false
+var dir = 1
 
 @onready var sprite: Sprite2D = $Sprite2D
 @onready var animation: AnimationPlayer = $AnimationPlayer
 @onready var coyote_timer: Timer = $coyote_timer
 @onready var jump_buffer: Timer = $jump_buffer
-
+	
 func _physics_process(delta):
 	if not is_on_floor():
 		velocity.y += gravity * delta
@@ -26,8 +27,10 @@ func _physics_process(delta):
 		velocity.x = direction * SPEED
 		if direction > 0:
 			sprite.flip_h = false
+			dir = 1
 		else:
 			sprite.flip_h = true
+			dir = -1
 	else:
 		velocity.x = move_toward(velocity.x, 0, SPEED)
 		

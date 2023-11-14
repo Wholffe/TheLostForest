@@ -1249,10 +1249,6 @@ position_smoothing_enabled = true
 
 [node name="PauseMenu" parent="Camera2D" instance=ExtResource("6_gc3vb")]
 
-[node name="Enemy" parent="." instance=ExtResource("3_01v62")]
-process_mode = 1
-position = Vector2(302, 107)
-
 [node name="Soul" parent="." instance=ExtResource("4_nwgqm")]
 position = Vector2(49, 108)
 
@@ -1261,3 +1257,7 @@ position = Vector2(124, 103)
 
 [node name="RemoteTransform2D" type="RemoteTransform2D" parent="Player"]
 remote_path = NodePath("../../Camera2D")
+
+[node name="Enemy" parent="." instance=ExtResource("3_01v62")]
+process_mode = 1
+position = Vector2(302, 107)
