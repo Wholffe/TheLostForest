@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://27s8lyunqtcv"]
+[gd_scene load_steps=18 format=3 uid="uid://27s8lyunqtcv"]
 
 [ext_resource type="Script" path="res://Scripts/Player.gd" id="1_cgog5"]
 [ext_resource type="Texture2D" uid="uid://bk3k0kakrjwiu" path="res://Assets/oak_woods_v1.0/character/char_blue.png" id="1_s86tq"]
@@ -89,6 +89,7 @@ tracks/0/keys = {
 [sub_resource type="Animation" id="Animation_rh0sw"]
 resource_name = "run"
 length = 0.70001
+loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -112,6 +113,31 @@ _data = {
 "run": SubResource("Animation_rh0sw")
 }
 
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_rfp3q"]
+animation = &"idle"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_f5fem"]
+animation = &"run"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_pd7dd"]
+animation = &"run"
+
+[sub_resource type="AnimationNodeBlendSpace1D" id="AnimationNodeBlendSpace1D_6iqiy"]
+blend_point_0/node = SubResource("AnimationNodeAnimation_rfp3q")
+blend_point_0/pos = 0.0
+blend_point_1/node = SubResource("AnimationNodeAnimation_f5fem")
+blend_point_1/pos = 1.0
+blend_point_2/node = SubResource("AnimationNodeAnimation_pd7dd")
+blend_point_2/pos = -1.0
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_vx1kr"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_ogjdo"]
+states/move/node = SubResource("AnimationNodeBlendSpace1D_6iqiy")
+states/move/position = Vector2(359, 100)
+transitions = ["Start", "move", SubResource("AnimationNodeStateMachineTransition_vx1kr")]
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2q5os"]
 size = Vector2(18, 9)
 
@@ -133,6 +159,11 @@ autoplay = "idle"
 libraries = {
 "": SubResource("AnimationLibrary_57paf")
 }
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+tree_root = SubResource("AnimationNodeStateMachine_ogjdo")
+anim_player = NodePath("../AnimationPlayer")
+parameters/move/blend_position = 0
 
 [node name="Area2D" type="Area2D" parent="." groups=["FromPlayer"]]
 
