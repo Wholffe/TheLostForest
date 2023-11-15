@@ -68,5 +68,5 @@ func spawn_soul(targetlocation):
 	get_parent().add_child(soul_instance)
 	
 func _on_area_2d_area_entered(area):
-	if(area.is_in_group("FromPlayer")):
+	if(area.is_in_group("FromPlayer") and !is_dead):
 		hit()
