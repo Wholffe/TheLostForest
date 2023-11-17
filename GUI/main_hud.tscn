@@ -1,0 +1,37 @@
+[gd_scene load_steps=3 format=3 uid="uid://cyem74fwupudq"]
+
+[ext_resource type="Script" path="res://Scripts/main_hud.gd" id="1_uhv8s"]
+[ext_resource type="Texture2D" uid="uid://cncomejnsw0r8" path="res://Assets/fire_fx_v1.0/png/purple/start/burning_start_1.png" id="2_uywyo"]
+
+[node name="MainHUD" type="CanvasLayer"]
+script = ExtResource("1_uhv8s")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+offset_right = 60.0
+offset_bottom = 64.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+alignment = 2
+
+[node name="hp_value" type="RichTextLabel" parent="VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(90, 30)
+layout_mode = 2
+text = "99"
+
+[node name="Sprite2D" type="Sprite2D" parent="VBoxContainer/HBoxContainer"]
+position = Vector2(73, 39)
+texture = ExtResource("2_uywyo")
+hframes = 4
+frame = 3
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="mana_value" type="RichTextLabel" parent="VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(90, 30)
+layout_mode = 2
+text = "99"
+scroll_active = false
+
+[node name="Sprite2D" type="Sprite2D" parent="VBoxContainer/HBoxContainer2"]

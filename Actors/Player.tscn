@@ -1,7 +1,8 @@
-[gd_scene load_steps=12 format=3 uid="uid://27s8lyunqtcv"]
+[gd_scene load_steps=13 format=3 uid="uid://27s8lyunqtcv"]
 
 [ext_resource type="Script" path="res://Scripts/Player.gd" id="1_cgog5"]
 [ext_resource type="Texture2D" uid="uid://bk3k0kakrjwiu" path="res://Assets/oak_woods_v1.0/character/char_blue.png" id="1_s86tq"]
+[ext_resource type="PackedScene" uid="uid://cyem74fwupudq" path="res://GUI/main_hud.tscn" id="3_47gks"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_0nj6r"]
 radius = 7.0
@@ -89,6 +90,7 @@ tracks/0/keys = {
 [sub_resource type="Animation" id="Animation_rh0sw"]
 resource_name = "run"
 length = 0.70001
+loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -148,5 +150,7 @@ one_shot = true
 [node name="jump_buffer" type="Timer" parent="."]
 wait_time = 0.1
 one_shot = true
+
+[node name="MainHUD" parent="." instance=ExtResource("3_47gks")]
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
