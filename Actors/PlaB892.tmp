@@ -184,11 +184,10 @@ one_shot = true
 wait_time = 0.1
 one_shot = true
 
-[node name="CharacterStateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
+[node name="CharacterStateMachine" type="Node" parent="."]
 script = ExtResource("3_j4lbo")
-initial_state = NodePath("GroundState")
 
-[node name="GroundState" type="Node" parent="CharacterStateMachine"]
+[node name="Ground" type="Node" parent="CharacterStateMachine"]
 script = ExtResource("4_0ojp3")
 
 [node name="AirState" type="Node" parent="CharacterStateMachine"]
