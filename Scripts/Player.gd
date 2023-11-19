@@ -30,7 +30,7 @@ func _physics_process(delta):
 		velocity.x = direction.x * SPEED
 	else:
 		velocity.x = move_toward(velocity.x, 0, SPEED)
-		
+
 	if(!is_attacking):
 		check_attack()
 	if !jump_buffer.is_stopped() and (is_on_floor() or !coyote_timer.is_stopped() and can_jump):
@@ -40,8 +40,8 @@ func _physics_process(delta):
 	var was_on_floor = is_on_floor()
 	
 	move_and_slide()
+	update_facing_direction()	
 	update_animation()
-	update_facing_direction()
 	
 	if was_on_floor and !is_on_floor() and coyote_timer.is_stopped():
 		coyote_timer.start()

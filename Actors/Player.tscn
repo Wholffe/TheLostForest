@@ -129,6 +129,8 @@ blend_point_1/node = SubResource("AnimationNodeAnimation_f5fem")
 blend_point_1/pos = 1.0
 blend_point_2/node = SubResource("AnimationNodeAnimation_pd7dd")
 blend_point_2/pos = -1.0
+blend_mode = 1
+sync = true
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_vx1kr"]
 advance_mode = 2
@@ -155,7 +157,6 @@ hframes = 8
 vframes = 7
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-autoplay = "idle"
 libraries = {
 "": SubResource("AnimationLibrary_57paf")
 }
@@ -163,7 +164,7 @@ libraries = {
 [node name="AnimationTree" type="AnimationTree" parent="."]
 tree_root = SubResource("AnimationNodeStateMachine_ogjdo")
 anim_player = NodePath("../AnimationPlayer")
-parameters/move/blend_position = 0
+parameters/move/blend_position = -0.97434
 
 [node name="Area2D" type="Area2D" parent="." groups=["FromPlayer"]]
 
@@ -179,5 +180,3 @@ one_shot = true
 [node name="jump_buffer" type="Timer" parent="."]
 wait_time = 0.1
 one_shot = true
-
-[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
