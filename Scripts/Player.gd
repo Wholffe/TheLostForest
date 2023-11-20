@@ -32,8 +32,6 @@ func _physics_process(delta):
 	else:
 		velocity.x = move_toward(velocity.x, 0, SPEED)
 
-	if(!is_attacking):
-		check_attack()
 	if !jump_buffer.is_stopped() and (is_on_floor() or !coyote_timer.is_stopped() and can_jump):
 		jump()
 	if Input.is_action_just_pressed("jump"):
@@ -59,19 +57,3 @@ func update_facing_direction():
 		sprite.flip_h = false
 	elif direction.x < 0:
 		sprite.flip_h = true
-	
-func check_attack():
-	if Input.is_action_just_pressed("attack"):
-		is_attacking = true
-		await get_tree().create_timer(0.2).timeout
-		$Area2D/CollisionShape2D.disabled = false
-		if(sprite.flip_h):
-			$Area2D/CollisionShape2D.position.x *= -1
-			toggle_attack = true
-
-#func _on_animation_player_animation_finished(anim_name):
-#	is_attacking = false
-#	$Area2D/CollisionShape2D.disabled = true
-#	if toggle_attack:
-#		$Area2D/CollisionShape2D.position.x *= -1
-#		toggle_attack = false

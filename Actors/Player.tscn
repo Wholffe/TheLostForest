@@ -1,10 +1,11 @@
-[gd_scene load_steps=21 format=3 uid="uid://27s8lyunqtcv"]
+[gd_scene load_steps=22 format=3 uid="uid://27s8lyunqtcv"]
 
 [ext_resource type="Script" path="res://Scripts/Player.gd" id="1_cgog5"]
 [ext_resource type="Texture2D" uid="uid://bk3k0kakrjwiu" path="res://Assets/oak_woods_v1.0/character/char_blue.png" id="1_s86tq"]
 [ext_resource type="Script" path="res://Scripts/CharacterStateMachine.gd" id="3_j4lbo"]
 [ext_resource type="Script" path="res://Scripts/GroundState.gd" id="4_0ojp3"]
 [ext_resource type="Script" path="res://Scripts/AirState.gd" id="5_45ote"]
+[ext_resource type="Script" path="res://Scripts/AttackState.gd" id="6_3rkde"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_0nj6r"]
 radius = 7.0
@@ -142,6 +143,7 @@ advance_mode = 2
 states/move/node = SubResource("AnimationNodeBlendSpace1D_6iqiy")
 states/move/position = Vector2(359, 100)
 transitions = ["Start", "move", SubResource("AnimationNodeStateMachineTransition_vx1kr")]
+graph_offset = Vector2(-84, -62)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2q5os"]
 size = Vector2(18, 9)
@@ -193,6 +195,9 @@ script = ExtResource("4_0ojp3")
 
 [node name="AirState" type="Node" parent="CharacterStateMachine"]
 script = ExtResource("5_45ote")
+
+[node name="AttackState" type="Node" parent="CharacterStateMachine"]
+script = ExtResource("6_3rkde")
 
 [node name="StateDebugLabel" type="Label" parent="."]
 offset_left = -66.0
