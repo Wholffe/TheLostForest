@@ -12,3 +12,6 @@ func _process(delta):
 func add_mana():
 	mana += 1
 	print(mana)
+
+func player_damage(amount:int):
+	hp -= amount

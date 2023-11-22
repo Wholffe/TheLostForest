@@ -1,13 +1,16 @@
 extends CharacterBody2D
 
 const JUMP_VELOCITY = -400.0
-@export var SPEED = 50.0
+@export var speed = 50.0
 @export var enemy_hp = 3
+@export var damage = 1
 
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 var is_dead = false
 var direction = 1
 var is_hit = false
+var player_in_damage_zone = false
+var player_dir
 
 var knockback = false 
 var knockback_dir = 1
@@ -16,28 +19,38 @@ var knockback_dir = 1
 
 func _ready():
 	check_status()
-	
+
+func _process(delta):
+	player_dir = get_parent().get_node("Player").dir
+		
 func _physics_process(delta):
 	if not is_on_floor():
 		velocity.y += gravity * delta
-	if(!is_dead and !is_hit):
+	if !(is_dead):
+		if knockback:
+			velocity.y = -100
+			velocity.x = 100 * knockback_dir
+			knockback = false
 		if is_on_wall():
 			direction *= -1
 			animation.flip_h = !animation.flip_h
-		velocity.x = SPEED * direction
-		animation.play("move")
-	if knockback:
-		velocity.y = -50
-		velocity.x = 50 * knockback_dir
-		knockback = false
-	move_and_slide()
-	if(is_dead and !$VisibleOnScreenNotifier2D.is_on_screen()):
-		$CollisionShape2D.set_deferred("disabled",true)
-		queue_free()
+		if !player_in_damage_zone:
+			animation.play("move")
+		velocity.x = speed * direction
+		move_and_slide()
+	else:
+		$CollisionShape2D.disabled = true
+		if !$VisibleOnScreenNotifier2D.is_on_screen():
+			queue_free()
 
 func check_status():
 	if(enemy_hp<=0):
 		kill_enemy()
+	if !is_dead:
+		if player_in_damage_zone:
+			attack()
+		else:
+			pass
 
 func kill_enemy():
 	is_dead = true
@@ -55,7 +68,6 @@ func hit():
 	enemy_hp -= 1
 	animation.play("hit")
 	check_status()
-	var player_dir = get_parent().get_node("Player").dir
 	knockback_dir = player_dir
 	knockback = true
 	await get_tree().create_timer(0.2).timeout
@@ -66,7 +78,29 @@ func spawn_soul(targetlocation):
 	var soul_instance = soul.instantiate()
 	soul_instance.position = targetlocation
 	get_parent().add_child(soul_instance)
+
+func attack():
+	speed = 0
+	animation.play("idle")
+	animation.pause()
+	while true:
+		animation.play("attack")
+		await get_tree().create_timer(0.5).timeout
+		if !player_in_damage_zone or is_dead or is_hit:
+			return
+		Globals.player_damage(damage)
 	
 func _on_area_2d_area_entered(area):
 	if(area.is_in_group("FromPlayer") and !is_dead):
 		hit()
+		
+func _on_area_2d_body_entered(body):
+	if body.is_in_group("Player") and !is_dead:
+		player_in_damage_zone = true
+		check_status()
+
+func _on_area_2d_body_exited(body):
+	if body.is_in_group("Player") and !is_dead:
+		speed = 50
+		player_in_damage_zone = false
+		check_status()
