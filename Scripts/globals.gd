@@ -1,6 +1,6 @@
 extends Node
 
-var hp: int = 3
+var hp: int = 5
 var mana: int = 0
 
 func _ready():

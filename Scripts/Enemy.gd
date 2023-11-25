@@ -9,9 +9,8 @@ var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 var is_dead = false
 var direction = 1
 var is_hit = false
-var player_in_damage_zone = false
+var is_attacking = false
 var player_dir
-
 var knockback = false 
 var knockback_dir = 1
 
@@ -26,15 +25,17 @@ func _process(delta):
 func _physics_process(delta):
 	if not is_on_floor():
 		velocity.y += gravity * delta
+	update_animation()
 	if !(is_dead):
 		if knockback:
+			animation.play("hit")
 			velocity.y = -100
 			velocity.x = 100 * knockback_dir
 			knockback = false
-		if is_on_wall():
+		if is_on_wall() and !is_attacking:
 			direction *= -1
 			animation.flip_h = !animation.flip_h
-		if !player_in_damage_zone:
+		if !is_attacking:
 			animation.play("move")
 		velocity.x = speed * direction
 		move_and_slide()
@@ -47,7 +48,7 @@ func check_status():
 	if(enemy_hp<=0):
 		kill_enemy()
 	if !is_dead:
-		if player_in_damage_zone:
+		if is_attacking:
 			attack()
 		else:
 			pass
@@ -72,6 +73,7 @@ func hit():
 	knockback = true
 	await get_tree().create_timer(0.2).timeout
 	is_hit = false
+	check_status()
 
 func spawn_soul(targetlocation):
 	var soul = preload("res://Actors/soul.tscn")
@@ -81,26 +83,43 @@ func spawn_soul(targetlocation):
 
 func attack():
 	speed = 0
-	animation.play("idle")
 	animation.pause()
-	while true:
-		animation.play("attack")
-		await get_tree().create_timer(0.5).timeout
-		if !player_in_damage_zone or is_dead or is_hit:
-			return
-		Globals.player_damage(damage)
-	
+	animation.play("attack")
+	await get_tree().create_timer(0.5).timeout
+	if !is_attacking or is_dead or is_hit:
+		return
+	Globals.player_damage(damage)
+	check_status()
+
+func turn_to_player():
+	var collider = $RayCast2DRight.get_collider()
+	if collider:
+		direction = 1
+		animation.flip_h = false
+	else:
+		direction = -1
+		animation.flip_h = true
+
+func update_animation():
+	if direction > 1:
+		animation.flip_h = false
+	elif direction < -1:
+		animation.flip_h = true
+
 func _on_area_2d_area_entered(area):
 	if(area.is_in_group("FromPlayer") and !is_dead):
 		hit()
 		
 func _on_area_2d_body_entered(body):
 	if body.is_in_group("Player") and !is_dead:
-		player_in_damage_zone = true
+		$AttackArea/CollisionShape2D.disabled = false
+		is_attacking = true
+		turn_to_player()
 		check_status()
 
 func _on_area_2d_body_exited(body):
 	if body.is_in_group("Player") and !is_dead:
 		speed = 50
-		player_in_damage_zone = false
+		is_attacking = false
+		$AttackArea/CollisionShape2D.disabled = true
 		check_status()
